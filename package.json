@@ -1,0 +1,22 @@
+{
+  "name": "gym",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IyarMadmon/gym.git"
+  },
+  "author": "IyarMadmon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IyarMadmon/gym/issues"
+  },
+  "homepage": "https://github.com/IyarMadmon/gym#readme",
+  "dependencies": {
+    "mongodb": "^2.2.22"
+  }
+}
