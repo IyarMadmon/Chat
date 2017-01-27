@@ -24,11 +24,49 @@
 //     callback(result);
 //   });
 // };
-var http = require('http');
+// var http = require('http');
+//
+// var server = http.createServer();
+//
+// server.on("request", (request, response) => {
+//   response.writeHead(200);
+//   response.write("Hello, this is Shoham");
+//   console.log("Yes!!!");
+//   response.end();
+// });
+//
+// server.listen(8080);
+// console.log("listening...");
 
-http.createServer(function(request, response) {
-  response.writeHead(200);
-  response.write("Hello, this is Shoham");
-  console.log("Yes!!!");
-  response.end();
-}).listen(8080);
+const express = require('express');
+const path = require('path');
+
+const app = express();
+
+app.get('/stam', (req,res) => {
+  console.log("express");
+  res.json({"stam": "pip"});
+});
+
+console.log("__dirname ", __dirname);
+
+app.use('/', express.static(path.join(__dirname,'static')));
+
+app.listen(8080);
+
+// app.get('/tweets/:username', (req,res) => {
+//   console.log("twitter");
+//   const username = req.params.username;
+// console.log('username = ${username}');
+//   options = {
+//     protocol:"http:",
+//     host:"api.twitter.com",
+//     pathname: '1.1/statuses/user_timeline.json',
+//     query:{screen_name:username, count:10}
+//   }
+//   const twitterUrl = url.format(options);
+//   request(twitterUrl).pipe(res);
+//
+// });
+// app.listen(8080);
+// console.log("listening...");
