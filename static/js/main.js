@@ -5,18 +5,16 @@
   socket.on('connected', function (data) {
        console.log("data = ", data);
 
-       document.getElementById("allText").addEventListener("click", () => {
-         socket.emit("please", {'room':'MainRoom'});
-       });
-
-       socket.on("please", (data) => {
-
+       document.getElementById("sendMessage").addEventListener("click", () => {
+         const username = document.getElementById("username").value;
+         const messageContent = document.getElementById("message").value;
+         document.getElementById("message").value = '';
+         socket.emit("newMessage", {'username': username, 'messageContent': messageContent});
        });
 
        socket.on('newMessage', (data) => {
          console.log("newMessage = ", data);
-         const current = document.getElementById("allText").innerHTML;
-         document.getElementById("allText").innerHTML = current + data;
+         document.getElementById("chat").innerHTML += "<strong>" + data.username + "</strong>: " + data.messageContent + "<br>" ;
        });
 
        socket.on('disconnect', function() {
