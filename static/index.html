@@ -12,8 +12,14 @@
     <header >
       <h1> Chat Shit </h1>
     </header>
-    <input type="text" id="username" placeholder="Enter nickname"></input>
 
+    <input type="text" id="username" placeholder="Enter nickname"></input>
+    <span>room:</span>
+    <select id = "roomSelector">
+      <option disabled selected value> -- select a room -- </option>
+      <option value="North">North</option>
+      <option value="South">South</option>
+    </select>
     <div id="chat">
     </div>
     <input type="text" id="message" placeholder="Enter message"></input>

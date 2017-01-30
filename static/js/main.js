@@ -5,11 +5,19 @@
   socket.on('connected', function (data) {
        console.log("data = ", data);
 
+       document.getElementById("roomSelector").addEventListener("change",  () => {
+         const e = document.getElementById("roomSelector");
+         const roomId = e.options[e.selectedIndex].value;
+         socket.emit("roomChange", roomId);
+       });
+
        document.getElementById("sendMessage").addEventListener("click", () => {
          const username = document.getElementById("username").value;
          const messageContent = document.getElementById("message").value;
          document.getElementById("message").value = '';
-         socket.emit("newMessage", {'username': username, 'messageContent': messageContent});
+         const e = document.getElementById("roomSelector");
+         const roomId = e.options[e.selectedIndex].value;
+         socket.emit("newMessage", {'username': username, 'messageContent': messageContent, 'room':roomId});
        });
 
        socket.on('newMessage', (data) => {

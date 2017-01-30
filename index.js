@@ -11,7 +11,11 @@ io.on('connection', function(socket) {
 
   socket.on('newMessage', (data) => {
     console.log("data = ", data);
-    io.emit('newMessage', data);
+    io.to(data.room).emit('newMessage', data);
+  });
+
+  socket.on("roomChange", (data) => {
+    socket.join(data);
   });
 
   socket.on('disconnect', () => {
