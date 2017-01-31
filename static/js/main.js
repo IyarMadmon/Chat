@@ -1,31 +1,38 @@
 (function(){
 
   const socket = io();
-  console.log(socket);
+  let currentRoom;
+
   socket.on('connected', function (data) {
        console.log("data = ", data);
 
-       document.getElementById("roomSelector").addEventListener("change",  () => {
-         const e = document.getElementById("roomSelector");
-         const roomId = e.options[e.selectedIndex].value;
-         socket.emit("roomChange", roomId);
+       $("#roomSelector").change(function ()  {
+         roomVal = $(this).val();
+         if(!currentRoom) {
+           socket.emit("subscribeToRoom", roomVal);
+         } else if(currentRoom !== roomVal) {
+           socket.emit("unSubscribeFromRoom", currentRoom);
+           socket.emit("subscribeToRoom", roomVal);
+           $("#chat").html("");
+         }
+         currentRoom = roomVal;
        });
 
-       document.getElementById("sendMessage").addEventListener("click", () => {
-         const username = document.getElementById("username").value;
-         const messageContent = document.getElementById("message").value;
-         document.getElementById("message").value = '';
-         const e = document.getElementById("roomSelector");
-         const roomId = e.options[e.selectedIndex].value;
-         socket.emit("newMessage", {'username': username, 'messageContent': messageContent, 'room':roomId});
+       $("#sendMessage").click(function () {
+         const username = $("#username").val();
+         const message = $("#message").val();
+         const roomVal = $("#roomSelector").val();
+         socket.emit("newMessage", {'username': username, 'messageContent': message, 'room':roomVal});
+         $("#message").val("");
        });
 
        socket.on('newMessage', (data) => {
          console.log("newMessage = ", data);
-         document.getElementById("chat").innerHTML += "<strong>" + data.username + "</strong>: " + data.messageContent + "<br>" ;
+         $("#chat").html($("#chat").html() + "<strong>" + data.username + "</strong>: " + data.messageContent + "<br>");
        });
 
        socket.on('disconnect', function() {
+         socket.emit("unSubscribeFromRoom", currentRoom);
          console.log('disconnect');
        });
   });

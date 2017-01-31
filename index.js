@@ -18,6 +18,14 @@ io.on('connection', function(socket) {
     socket.join(data);
   });
 
+  socket.on("subscribeToRoom", (data) => {
+    socket.join(data);
+  });
+
+  socket.on("unSubscribeFromRoom", (data) => {
+    socket.leave(data);
+  });
+
   socket.on('disconnect', () => {
     console.log("disconnect");
   });
