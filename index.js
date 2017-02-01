@@ -19,10 +19,12 @@ io.on('connection', function(socket) {
   });
 
   socket.on("subscribeToRoom", (data) => {
+    console.log("subscribe", data);
     socket.join(data);
   });
 
   socket.on("unSubscribeFromRoom", (data) => {
+    console.log("unsubscribe", data);
     socket.leave(data);
   });
 
