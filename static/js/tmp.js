@@ -23,7 +23,7 @@ class ChatBox extends React.Component {
     socket.on('newMessage', (data) => {
       console.log("newMessage = ", data);
       const currentText = this.state.chatContent;
-      this.setState({chatContent: [currentText, "<strong>", data.username, "</strong>: ", data.messageContent, "<br>"].join()});
+      this.setState({chatContent: [currentText, "<strong>", data.userName, "</strong>: ", data.messageContent, "<br>"].join()});
     });
   }
 
@@ -38,8 +38,7 @@ class ChatBox extends React.Component {
   }
 
   _onSendMessage(event) {
-    console.log(this.state.username);
-    socket.emit("newMessage", {'username': this.state.username, 'messageContent': this.state.messageContent, 'room':this.state.selectedRoom});
+    socket.emit("newMessage", {'userName': this.state.userName, 'messageContent': this.state.messageContent, 'room':this.state.selectedRoom});
     this.setState({messageContent: ""});
   }
 
