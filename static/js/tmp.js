@@ -5,8 +5,7 @@ class ChatBox extends React.Component {
     this.state = {
       selectedRoom: null,
       chatContent: "welcome",
-      userName: "",
-      messageContent: ""
+      userName: ""
     };
   };
 
@@ -23,7 +22,7 @@ class ChatBox extends React.Component {
     socket.on('newMessage', (data) => {
       console.log("newMessage = ", data);
       const currentText = this.state.chatContent;
-      this.setState({chatContent: [currentText, "<strong>", data.userName, "</strong>: ", data.messageContent, "<br>"].join()});
+      this.setState({chatContent: currentText + `<strong> ${data.userName} </strong>:  ${data.messageContent} <br>`});
     });
   }
 
@@ -32,18 +31,12 @@ class ChatBox extends React.Component {
               <UserName onChange={this._onChangeUserName.bind(this)}/>
               <RoomSelector rooms={this._getRooms()} onChange={this._selectRoom.bind(this)}/>
               <Chat chatContent={this.state.chatContent}/>
-              <MessageInput onChange={this._onMessageChange.bind(this)}/>
-              <SendMessageButton onClick={this._onSendMessage.bind(this)} enabled={this.state.selectedRoom && this.state.userName !== "" && this.state.messageContent !== ""}/>
+              <MessageInputAndButton enabled={this.state.selectedRoom && this.state.userName !== ""} onSubmit={this._onSendMessage.bind(this)}/>
             </div>);
   }
 
-  _onSendMessage(event) {
-    socket.emit("newMessage", {'userName': this.state.userName, 'messageContent': this.state.messageContent, 'room':this.state.selectedRoom});
-    this.setState({messageContent: ""});
-  }
-
-  _onMessageChange(event) {
-    this.setState({messageContent:event.target.value});
+  _onSendMessage(messageContent) {
+    socket.emit("newMessage", {'userName': this.state.userName, 'messageContent': messageContent, room:this.state.selectedRoom});
   }
 
   _onChangeUserName(event) {
@@ -54,11 +47,10 @@ class ChatBox extends React.Component {
     if(this.state.selectedRoom) {
       socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
     }
-    this.setState({selectedRoom:event.target.value, chatContent:`Welcome to room ${event.target.value}`});
+    this.setState({selectedRoom:event.target.value, chatContent:`Welcome to room ${event.target.value} <br>`}, () => console.log(this.state.chatContent));
+
     this.setState({selectedRoom:event.target.value}, () => console.log(this.state.selectedRoom));
     socket.emit("subscribeToRoom", event.target.value);
-    // console.log(event.target.value);
-    // console.log(this.state.selectedRoom);
   }
 
   _getRooms() {
@@ -91,20 +83,44 @@ class RoomSelectOption extends React.Component {
  }
 
 class Chat extends React.Component {
+
+  createMarkup() {
+    return {__html: this.props.chatContent};
+  }
+
   render() {
-    return (<div id="chat">{this.props.chatContent}</div>);
+    return (<div id="chat" dangerouslySetInnerHTML={this.createMarkup()}></div>);
   };
 }
 
-class MessageInput extends React.Component {
-  render() {
-    return (<input type="text" id="message" placeholder="Enter message" onChange={this.props.onChange}></input>);
-  }
-}
+class MessageInputAndButton extends React.Component {
 
-class SendMessageButton extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      inputValue : ""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    if(this.state.inputValue === "") return;
+    this.props.onSubmit(this.state.inputValue);
+    this.setState({inputValue : ""});
+  }
+
+  handleChange(event) {
+    this.setState({inputValue: event.target.value});
+  }
+
   render() {
-      return (<button id="sendMessage" default="true" disabled={!this.props.enabled} onClick={this.props.onClick}>Send</button>);
+    return (<form onSubmit={this.handleSubmit}>
+              <input disabled={!this.props.enabled} type="text" id="message" placeholder="Enter message" value={this.state.inputValue} onChange={this.handleChange}/>
+              <input id="sendMessage" type="submit" value="->"/>
+            </form>);
   }
 }
 
