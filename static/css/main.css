@@ -4,12 +4,9 @@ header {
 }
 
 #username {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
   box-sizing: content-box;
   position: relative;
   border: 1px solid #b7b7b7;
-  -webkit-border-radius: 5px;
   border-radius: 5px;
   font: normal 16px/normal "Comic Sans MS", cursive, sans-serif;
   color: rgba(0,0,0,0.9);
@@ -21,7 +18,8 @@ header {
   text-align: left;
   border:1px solid black;
   height: 200px;
-    width: 50%;
+  width: 50%;
+  display: inline-block;
 }
 
 

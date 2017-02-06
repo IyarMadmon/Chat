@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import Chat from './chat';
 import MessageInputAndButton from './messageInputAndButton';
+import RoomSelector from './roomSelector';
 
 const socket = io();
 
@@ -22,7 +23,7 @@ export default class ChatBox extends React.Component {
     });
     socket.on('disconnect', () => {
       if(this.state.selectedRoom) {
-        socket.emit("unSubscribeFromRoom", currentRoom);
+        socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
       }
       console.log('disconnect');
     });
@@ -36,8 +37,9 @@ export default class ChatBox extends React.Component {
   render() {
     return (<div>
               <UserName onChange={this._onChangeUserName.bind(this)}/>
-              <RoomSelector rooms={this._getRooms()} onChange={this._selectRoom.bind(this)}/>
+              <br/>
               <Chat chatContent={this.state.chatContent}/>
+              <RoomSelector rooms={this._getRooms()} onChange={this._selectRoom.bind(this)}/>
               <MessageInputAndButton enabled={this.state.selectedRoom && this.state.userName !== ""} onSubmit={this._onSendMessage.bind(this)}/>
             </div>);
   }
@@ -67,18 +69,4 @@ export default class ChatBox extends React.Component {
 
 function UserName(props) {
   return (<input type="text" id="username" placeholder="Enter nickname" onChange={props.onChange}></input>);
-}
-
-function RoomSelector(props) {
-  return (<span>
-            <span>room:</span>
-            <select id = "roomSelector" onChange={props.onChange}>
-              <option disabled selected value=""> -- select a room -- </option>
-              {props.rooms.map(room => <RoomSelectOption id={room.id} name={room.name} key={room.id}>{room.name}</RoomSelectOption>)}
-            </select>
-          </span>);
-}
-
-function RoomSelectOption(props) {
-  return (<option value={props.name} id={props.id}>{props.name}</option>);
 }
