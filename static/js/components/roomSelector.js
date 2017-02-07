@@ -7,14 +7,15 @@ export default class RoomSelector extends React.Component {
   }
 
   render () {
-    return (<span>
-              <label>room
-                <select id = "roomSelector" onChange={this.props.onChange}>
-                  <option disabled selected value=""> -- select a room -- </option>
-                  {this.props.rooms.map(room => <RoomSelectOption id={room.id} name={room.name} key={room.id}>{room.name}</RoomSelectOption>)}
-                </select>
-              </label>
-            </span>);
+
+
+
+    return (<div id="roomSelector">
+              <span className="roomOption">one</span>
+              <span className="roomOption">two</span>
+            </div>
+
+    );
   }
 }
 

@@ -12,14 +12,30 @@ header {
   color: rgba(0,0,0,0.9);
   -o-text-overflow: clip;
   text-overflow: clip;
+  display: block;
 }
 
 #chat {
   text-align: left;
+  float: left;
   border:1px solid black;
   height: 200px;
   width: 50%;
   display: inline-block;
+}
+
+#roomSelector {
+  float: left;
+  text-align: left;
+  border:1px solid black;
+  display: inline-block;
+  height: 200px;
+  width: 15%;
+}
+
+.roomOption {
+  width: 100%;
+  display: block;
 }
 
 

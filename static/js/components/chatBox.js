@@ -37,9 +37,9 @@ export default class ChatBox extends React.Component {
   render() {
     return (<div>
               <UserName onChange={this._onChangeUserName.bind(this)}/>
-              <br/>
               <Chat chatContent={this.state.chatContent}/>
               <RoomSelector rooms={this._getRooms()} onChange={this._selectRoom.bind(this)}/>
+              <br/>
               <MessageInputAndButton enabled={this.state.selectedRoom && this.state.userName !== ""} onSubmit={this._onSendMessage.bind(this)}/>
             </div>);
   }
