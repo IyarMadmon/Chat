@@ -36,11 +36,19 @@ export default class ChatBox extends React.Component {
 
   render() {
     return (<div>
-              <UserName onChange={this._onChangeUserName.bind(this)}/>
-              <Chat chatContent={this.state.chatContent}/>
-              <RoomSelector rooms={this._getRooms()} onChange={this._selectRoom.bind(this)}/>
-              <br/>
-              <MessageInputAndButton enabled={this.state.selectedRoom && this.state.userName !== ""} onSubmit={this._onSendMessage.bind(this)}/>
+              <UserName
+                onChange={this._onChangeUserName.bind(this)}/>
+
+              <Chat
+                chatContent={this.state.chatContent}/>
+
+              <RoomSelector
+                rooms={this._getRooms()}
+                onChange={this._selectRoom.bind(this)}/>
+
+              <MessageInputAndButton
+                enabled={this.state.selectedRoom && this.state.userName !== ""}
+                onSubmit={this._onSendMessage.bind(this)}/>
             </div>);
   }
 
@@ -52,14 +60,14 @@ export default class ChatBox extends React.Component {
     this.setState({userName:event.target.value});
   }
 
-  _selectRoom(event) {
+  _selectRoom(roomVal) {
     if(this.state.selectedRoom) {
       socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
     }
-    this.setState({selectedRoom:event.target.value, chatContent:`Welcome to room ${event.target.value} <br>`}, () => console.log(this.state.chatContent));
+    this.setState({selectedRoom:roomVal, chatContent:`Welcome to room ${roomVal} <br>`}, () => console.log(this.state.chatContent));
 
-    this.setState({selectedRoom:event.target.value}, () => console.log(this.state.selectedRoom));
-    socket.emit("subscribeToRoom", event.target.value);
+    this.setState({selectedRoom:roomVal}, () => console.log(this.state.selectedRoom));
+    socket.emit("subscribeToRoom", roomVal);
   }
 
   _getRooms() {
