@@ -3,6 +3,7 @@ import React from 'react';
 import Chat from './chat';
 import MessageInputAndButton from './messageInputAndButton';
 import RoomSelector from './roomSelector';
+import Modal from 'react-modal';
 
 const socket = io();
 
@@ -36,6 +37,18 @@ export default class ChatBox extends React.Component {
 
   render() {
     return (<div>
+
+            <Modal
+                isOpen={true}
+                contentLabel="Modal"
+                shouldCloseOnOverlayClick={false}
+            >
+                <h1>Modal Content</h1>
+                <p>Etc.</p>
+            </Modal>
+
+
+
               <UserName
                 onChange={this._onChangeUserName.bind(this)}/>
 
