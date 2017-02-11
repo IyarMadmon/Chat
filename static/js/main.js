@@ -10,23 +10,27 @@ class App extends React.Component {
 
 
   render() {
-    const randomNumber = Math.random() >= 0.5;
-    console.log(randomNumber);
-    if(randomNumber) {
-        this.props.history.push('/Login');
-    }
-
     return (<div>
                 {this.props.children}
               </div>);
   }
 }
 
+function requireAuth(nextState, replaceState) {
+  console.log("Iyar", new Date().getTime());
+  // replaceState({ nextPathname: nextState.location.pathname }, '/login');
+  // replace({
+  //    pathname: '/login',
+  //    state: { nextPathname: nextState.location.pathname }
+  //  });
+  this.context.router.replace('login');
+}
+
 ReactDOM.render(
   <Router history={hashHistory}>
-    <Route path="/" component={App}>
-      <IndexRoute path ="Login" name ="Login" component={Login}></IndexRoute>
-      <Route path ="/" component={ChatBox}></Route>
+    <Route path="/" component={App} >
+      <Route path ="Login" name ="Login" component={Login}></Route>
+      <IndexRoute onEnter={requireAuth.bind(this)} component={ChatBox}></IndexRoute>
     </Route>
   </Router>,
 app);
