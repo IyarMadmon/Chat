@@ -5,5 +5,4 @@ import Login from './components/Login';
 
 const app = document.getElementById("app");
 
-ReactDOM.render(
-  <ChatBox/>, app);
+ReactDOM.render(<ChatBox/>, app);
