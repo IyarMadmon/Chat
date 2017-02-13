@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
 import React from 'react';
 import Chat from './chat';
+import UserName from './UserName';
 import MessageInputAndButton from './messageInputAndButton';
 import RoomSelector from './roomSelector';
 
@@ -57,8 +58,9 @@ export default class ChatBox extends React.Component {
     socket.emit("newMessage", {'userName': this.state.userName, 'messageContent': messageContent, room:this.state.selectedRoom});
   }
 
-  _onChangeUserName(event) {
-    this.setState({userName:event.target.value});
+  _onChangeUserName(userName) {
+    console.log("change username - ", userName);
+    this.setState({userName});
   }
 
   _selectRoom(roomVal) {
@@ -74,8 +76,4 @@ export default class ChatBox extends React.Component {
   _getRooms() {
     return [{id:1, name:"North"}, {id:2, name:"South"}];
   }
-}
-
-function UserName(props) {
-  return (<input type="text" id="username" placeholder="Enter nickname" onChange={props.onChange}></input>);
 }
