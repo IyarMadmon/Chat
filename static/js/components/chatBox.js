@@ -14,7 +14,8 @@ export default class ChatBox extends React.Component {
     this.state = {
       selectedRoom: null,
       chatContent: "welcome",
-      userName: ""
+      userName: "",
+      isLoginModalOpen: true
     };
   };
 
@@ -39,10 +40,12 @@ export default class ChatBox extends React.Component {
     return (<div>
 
               <UserName
-                onChange={this._onChangeUserName.bind(this)}/>
+                onChange={this._onChangeUserName.bind(this)}
+                isModalOpen={this.state.isLoginModalOpen}/>
 
               <Chat
-                chatContent={this.state.chatContent}/>
+                chatContent={this.state.chatContent}
+                userName = {this.state.userName}/>
 
               <RoomSelector
                 rooms={this._getRooms()}
@@ -60,7 +63,7 @@ export default class ChatBox extends React.Component {
 
   _onChangeUserName(userName) {
     console.log("change username - ", userName);
-    this.setState({userName});
+    this.setState({userName, isLoginModalOpen:false});
   }
 
   _selectRoom(roomVal) {

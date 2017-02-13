@@ -7,6 +7,12 @@ export default class Chat extends React.Component {
   }
 
   render() {
-    return (<div id="chat" dangerouslySetInnerHTML={this.createMarkup()}></div>);
+    return (<div>
+              <h4>Hello {this.props.userName}</h4>
+              <div
+                id="chat"
+                dangerouslySetInnerHTML={this.createMarkup()}>
+              </div>
+            </div>);
   };
 }
