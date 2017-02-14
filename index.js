@@ -16,11 +16,8 @@ app.get('/rooms', (req, res) => {
   });
 })
 
-
 io.on('connection', function(socket) {
-
   console.log("connected. ");
-
   socket.emit('connected', 'Welcome to the chat server');
 
   socket.on('newMessage', (data) => {
