@@ -1,31 +1,29 @@
-const MongoClient = require('mongodb').MongoClient;
+var Db = require('mongodb').Db;
+var Server = require('mongodb').Server;
 
-// Connection URL
-const url = 'mongodb://localhost:27017/chat';
+RoomCollector = function() {
+  this.db= new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
+  this.db.open(function(){});
+};
 
-var p_db;
-
-function MongoPool(){}
-
-function initPool(cb){
-  MongoClient.connect(url,  function(err, db) {
-    if (err) throw err;
-
-    p_db = db;
-    if(cb && typeof(cb) == 'function')
-        cb(p_db);
+RoomCollector.prototype.getCollection= function(callback) {
+  this.db.collection('rooms', function(error, room_collection) {
+    if( error ) callback(error);
+    else callback(null, room_collection);
   });
-  return MongoPool;
-}
+};
 
-MongoPool.getInstance = (cb) => {
-  if(!p_db){
-    initPool(cb)
-  }
-  else{
-    if(cb && typeof(cb) == 'function')
-      cb(p_db);
-  }
-}
+//find all rooms
+RoomCollector.prototype.findAll = function(callback) {
+    this.getCollection(function(error, room_collection) {
+      if( error ) callback(error)
+      else {
+        room_collection.find({}, {_id:0}).toArray(function(error, results) {
+          if( error ) callback(error)
+          else callback(null, results)
+        });
+      }
+    });
+};
 
-module.exports = MongoPool;
+exports.RoomCollector = RoomCollector;

@@ -3,19 +3,24 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
-const MongoPool = require("./common/dbAccess");
+const RoomCollector = require("./common/dbAccess").RoomCollector;
 
 app.use('/', express.static(path.join(__dirname, '/static')));
 
-MongoPool.getInstance(function (db){
-    let rooms = db.collection("rooms").find();;
-    rooms.each(function(err, item) {
-      console.log(item);
-    });
-});
+const roomCollector= new RoomCollector();
+
+app.get('/rooms', (req, res) => {
+  roomCollector.findAll(function(error, rooms){
+        console.log(rooms);
+        res.json(rooms);
+  });
+})
+
 
 io.on('connection', function(socket) {
+
   console.log("connected. ");
+
   socket.emit('connected', 'Welcome to the chat server');
 
   socket.on('newMessage', (data) => {

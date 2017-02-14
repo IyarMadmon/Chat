@@ -4,6 +4,7 @@ import Chat from './chat';
 import UserName from './UserName';
 import MessageInputAndButton from './messageInputAndButton';
 import RoomSelector from './roomSelector';
+import request from 'superagent';
 
 const socket = io();
 
@@ -12,6 +13,7 @@ export default class ChatBox extends React.Component {
   constructor() {
     super();
     this.state = {
+      rooms:[],
       selectedRoom: null,
       chatContent: "welcome",
       userName: "",
@@ -34,6 +36,8 @@ export default class ChatBox extends React.Component {
       const currentText = this.state.chatContent;
       this.setState({chatContent: currentText + `<strong> ${data.userName} </strong>:  ${data.messageContent} <br>`});
     });
+
+    this._getRooms();
   }
 
   render() {
@@ -48,7 +52,7 @@ export default class ChatBox extends React.Component {
                 userName = {this.state.userName}/>
 
               <RoomSelector
-                rooms={this._getRooms()}
+                rooms={this.state.rooms}
                 onChange={this._selectRoom.bind(this)}/>
 
               <MessageInputAndButton
@@ -77,6 +81,8 @@ export default class ChatBox extends React.Component {
   }
 
   _getRooms() {
-    return [{id:1, name:"North"}, {id:2, name:"South"}];
+    request.get('/rooms').end((err, res) => {
+      this.setState({rooms:res.body});
+    })
   }
 }
