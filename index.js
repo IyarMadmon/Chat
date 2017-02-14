@@ -3,8 +3,16 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const path = require('path');
+const MongoPool = require("./common/dbAccess");
 
 app.use('/', express.static(path.join(__dirname, '/static')));
+
+MongoPool.getInstance(function (db){
+    let rooms = db.collection("rooms").find();;
+    rooms.each(function(err, item) {
+      console.log(item);
+    });
+});
 
 io.on('connection', function(socket) {
   console.log("connected. ");
