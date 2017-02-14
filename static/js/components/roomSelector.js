@@ -34,5 +34,5 @@ export default class RoomSelector extends React.Component {
 
 
 function RoomSelectOption(props) {
-  return (<span onClick={props.onSelect} className={props.classes} value={props.name} id={props.id}>{props.name}</span>);
+  return (<div onClick={props.onSelect} className={props.classes} value={props.name} id={props.id}>{props.name}</div>);
 }

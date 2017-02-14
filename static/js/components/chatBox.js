@@ -12,10 +12,11 @@ export default class ChatBox extends React.Component {
 
   constructor() {
     super();
+    this.mesConut = 0;
     this.state = {
       rooms:[],
       selectedRoom: null,
-      chatContent: "welcome",
+      chatContent: [],
       userName: "",
       isLoginModalOpen: true
     };
@@ -33,8 +34,8 @@ export default class ChatBox extends React.Component {
     });
     socket.on('newMessage', (data) => {
       console.log("newMessage = ", data);
-      const currentText = this.state.chatContent;
-      this.setState({chatContent: currentText + `<strong> ${data.userName} </strong>:  ${data.messageContent} <br>`});
+      const chatContent =  this.state.chatContent.concat(data);
+      this.setState({chatContent});
     });
 
     this._getRooms();
@@ -42,7 +43,6 @@ export default class ChatBox extends React.Component {
 
   render() {
     return (<div>
-
               <UserName
                 onChange={this._onChangeUserName.bind(this)}
                 isModalOpen={this.state.isLoginModalOpen}/>
@@ -62,11 +62,10 @@ export default class ChatBox extends React.Component {
   }
 
   _onSendMessage(messageContent) {
-    socket.emit("newMessage", {'userName': this.state.userName, 'messageContent': messageContent, room:this.state.selectedRoom});
+    socket.emit("newMessage", {id:++this.mesConut,  sender: this.state.userName, content: messageContent, room:this.state.selectedRoom});
   }
 
   _onChangeUserName(userName) {
-    console.log("change username - ", userName);
     this.setState({userName, isLoginModalOpen:false});
   }
 
@@ -74,7 +73,7 @@ export default class ChatBox extends React.Component {
     if(this.state.selectedRoom) {
       socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
     }
-    this.setState({selectedRoom:roomVal, chatContent:`Welcome to room ${roomVal} <br>`}, () => console.log(this.state.chatContent));
+    // this.setState({selectedRoom:roomVal, chatContent:`Welcome to room ${roomVal} <br>`});
 
     this.setState({selectedRoom:roomVal}, () => console.log(this.state.selectedRoom));
     socket.emit("subscribeToRoom", roomVal);
