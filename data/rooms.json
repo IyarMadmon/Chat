@@ -1,4 +1,4 @@
 {"_id":{"$oid":"58a2df81009901c379e0a3ea"},"id":1.0,"name":"North"}
 {"_id":{"$oid":"58a2df81009901c379e0a3eb"},"id":2.0,"name":"South"}
-{"_id":{"$oid":"58a56b4ec387d36b1a742ac2"},"id":3.0,"name":"West","messages":[{"sender":"John Lennon","content":"Hi Blokes","time":{"$date":"2017-02-16T11:43:12.031Z"}},{"sender":"Paul","content":"hungry..","time":{"$date":"2017-02-16T11:43:16.464Z"}},{"sender":"George","content":"Praise thelord","time":{"$date":"2017-02-16T11:47:12.035Z"}},{"sender":"Ringo","content":"i got blisters on my fingers","time":{"$date":"2017-02-16T11:47:23.467Z"}}]}
+{"_id":{"$oid":"58a56b4ec387d36b1a742ac2"},"id":3.0,"name":"West","messages":[{"sender":"John Lennon","content":"Hi Blokes","time":1.487258895911e+12},{"sender":"Paul","content":"hungry..","time":1.487258899871e+12},{"sender":"George","content":"Praise thelord","time":1.487258903056e+12},{"sender":"Ringo","content":"i got blisters on my fingers","time":1.487258907207e+12}]}
 {"_id":{"$oid":"58a56b57c387d36b1a742ac3"},"id":4.0,"name":"East"}

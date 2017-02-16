@@ -1,6 +1,11 @@
 var Db = require('mongodb').Db;
 var Server = require('mongodb').Server;
 
+const Rooms = (function() {
+  const QUEUE_LIMIT = 5;
+  
+})();
+
 RoomCollector = function() {
   this.db= new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
   this.db.open(function(){});
