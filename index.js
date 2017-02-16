@@ -11,10 +11,16 @@ const roomCollector= new RoomCollector();
 
 app.get('/rooms', (req, res) => {
   roomCollector.findAll(function(error, rooms){
-        console.log(rooms);
         res.json(rooms);
   });
-})
+});
+
+app.get('/room/messages/:roomid', (req, res) => {
+  const roomId = req.params.roomid;
+  roomCollector.findRoomMessages(roomId, function(error, roomMessages){
+        res.json(roomMessages);
+  });
+});
 
 io.on('connection', function(socket) {
   console.log("connected. ");

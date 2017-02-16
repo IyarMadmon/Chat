@@ -62,7 +62,7 @@ export default class ChatBox extends React.Component {
   }
 
   _onSendMessage(messageContent) {
-    socket.emit("newMessage", {id:++this.mesConut,  sender: this.state.userName, content: messageContent, room:this.state.selectedRoom});
+    socket.emit("newMessage", {sender: this.state.userName, content: messageContent, room:this.state.selectedRoom, time:new Date()});
   }
 
   _onChangeUserName(userName) {
@@ -73,15 +73,19 @@ export default class ChatBox extends React.Component {
     if(this.state.selectedRoom) {
       socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
     }
-    // this.setState({selectedRoom:roomVal, chatContent:`Welcome to room ${roomVal} <br>`});
 
-    this.setState({selectedRoom:roomVal}, () => console.log(this.state.selectedRoom));
+    this.setState({selectedRoom:roomVal});
     socket.emit("subscribeToRoom", roomVal);
+
+    request.get(`/room/messages/${roomVal}`).end((err, res) => {
+      const messages = res.body[0].messages;
+      this.setState({chatContent: messages ? messages : []});
+    })
   }
 
   _getRooms() {
     request.get('/rooms').end((err, res) => {
       this.setState({rooms:res.body});
-    })
+    });
   }
 }

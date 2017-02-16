@@ -14,11 +14,11 @@ RoomCollector.prototype.getCollection= function(callback) {
 };
 
 //find all rooms
-RoomCollector.prototype.findByQuery = function(callback, query) {
+RoomCollector.prototype.findByQuery = function(callback, query, fieldSelector) {
     this.getCollection(function(error, room_collection) {
       if( error ) callback(error);
       else {
-        room_collection.find(query, {_id:0}).toArray(function(error, results) {
+        room_collection.find(query, fieldSelector).toArray(function(error, results) {
           if( error ) callback(error);
           else callback(null, results);
         });
@@ -27,7 +27,11 @@ RoomCollector.prototype.findByQuery = function(callback, query) {
 };
 
 RoomCollector.prototype.findAll = function(callback) {
-  this.findByQuery(callback, {});
+  this.findByQuery(callback, {}, {_id:0, messages:0});
+}
+
+RoomCollector.prototype.findRoomMessages = function(roomId, callback) {
+  this.findByQuery(callback, {id:parseInt(roomId)}, {_id:0, name:0});
 }
 
 exports.RoomCollector = RoomCollector;

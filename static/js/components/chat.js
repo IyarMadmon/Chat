@@ -8,7 +8,7 @@ export default class Chat extends React.Component {
                 {this.props.chatContent.map(message => <MessageRow
                                                           sender={message.sender}
                                                           content={message.content}
-                                                          key={message.id}
+                                                          key={message.sender + message.time}
                                                         >
                                                        </MessageRow>)}
               </div>
