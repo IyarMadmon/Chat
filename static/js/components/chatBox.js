@@ -78,7 +78,7 @@ export default class ChatBox extends React.Component {
     socket.emit("subscribeToRoom", roomVal);
 
     request.get(`/room/messages/${roomVal}`).end((err, res) => {
-      const messages = res.body[0].messages;
+      const messages = res.body.messages;
       this.setState({chatContent: messages ? messages : []});
     })
   }

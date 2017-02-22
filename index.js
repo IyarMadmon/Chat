@@ -10,17 +10,12 @@ app.use('/', express.static(path.join(__dirname, '/static')));
 const roomCollector= new RoomCollector();
 
 app.get('/rooms', (req, res) => {
-  roomCollector.findAll(function(error, rooms){
-      console.log("rooms= ",rooms);
-      res.json(rooms);
-  });
+  res.json(roomCollector.getAllRooms());
 });
 
 app.get('/room/messages/:roomid', (req, res) => {
   const roomId = req.params.roomid;
-  roomCollector.findRoomMessages(roomId, function(error, roomMessages){
-        res.json(roomMessages);
-  });
+  res.json(roomCollector.getRoomMessages(roomId));
 });
 
 io.on('connection', function(socket) {
@@ -37,12 +32,10 @@ io.on('connection', function(socket) {
   });
 
   socket.on("subscribeToRoom", (data) => {
-    console.log("subscribe", data);
     socket.join(data);
   });
 
   socket.on("unSubscribeFromRoom", (data) => {
-    console.log("unsubscribe", data);
     socket.leave(data);
   });
 
