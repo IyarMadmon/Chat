@@ -11,7 +11,8 @@ const roomCollector= new RoomCollector();
 
 app.get('/rooms', (req, res) => {
   roomCollector.findAll(function(error, rooms){
-        res.json(rooms);
+      console.log("rooms= ",rooms);
+      res.json(rooms);
   });
 });
 
@@ -50,4 +51,6 @@ io.on('connection', function(socket) {
   });
 });
 
-http.listen(8080, () => console.log("listening on port 8080..."));
+http.listen(8080, () => {
+  console.log("listening on port 8080...");
+});

@@ -1,15 +1,27 @@
 var Db = require('mongodb').Db;
 var Server = require('mongodb').Server;
 
-const Rooms = (function() {
-  const QUEUE_LIMIT = 5;
-  
-})();
+
 
 RoomCollector = function() {
+  const initFunc = this.init.bind(this);
   this.db= new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
-  this.db.open(function(){});
+  this.db.open(function(){
+    console.log("Connected to DB");
+    initFunc();
+  });
 };
+
+RoomCollector.prototype.init = function() {
+  const updateObj = this.updateRoomsObject.bind(this);
+  this.findAll(function(err, results) {
+    updateObj(results);
+  });
+}
+
+RoomCollector.prototype.updateRoomsObject = function(newObj) {
+  this.rooms = newObj;
+}
 
 RoomCollector.prototype.getCollection= function(callback) {
   this.db.collection('rooms', function(error, room_collection) {
@@ -31,8 +43,12 @@ RoomCollector.prototype.findByQuery = function(callback, query, fieldSelector) {
     });
 };
 
-RoomCollector.prototype.findAll = function(callback) {
-  this.findByQuery(callback, {}, {_id:0, messages:0});
+RoomCollector.prototype.findAll = function(callback, fields) {
+  if(this.rooms) {
+    callback(null, this.rooms);
+  } else {
+      this.findByQuery(callback, {}, fields ? fields : {_id:0});
+  }
 }
 
 RoomCollector.prototype.findRoomMessages = function(roomId, callback) {
