@@ -62,7 +62,7 @@ export default class ChatBox extends React.Component {
   }
 
   _onSendMessage(messageContent) {
-    socket.emit("newMessage", {sender: this.state.userName, content: messageContent, room:this.state.selectedRoom, time:new Date()});
+    socket.emit("newMessage", {sender: this.state.userName, content: messageContent, room:this.state.selectedRoom, time:new Date().getTime()});
   }
 
   _onChangeUserName(userName) {

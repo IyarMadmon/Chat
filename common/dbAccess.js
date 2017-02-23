@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 let p_db;
 let p_rooms;
-const MAX_QUEUE_SIZE;
+const MAX_QUEUE_SIZE = 5;
 
 RoomCollector = function() {
   p_db = new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
@@ -42,6 +42,10 @@ RoomCollector.prototype.getAllRooms = function() {
 
 RoomCollector.prototype.getRoomMessages = function(roomId) {
   return p_rooms.filter(room => room.id == roomId)[0];
+}
+
+RoomCollector.prototype.addNewMessage = function(message) {
+  p_rooms.filter(room => message.room == room.id)[0].messages.push(_.pick(message, ['sender', 'content', 'time']));
 }
 
 exports.RoomCollector = RoomCollector;

@@ -24,6 +24,7 @@ io.on('connection', function(socket) {
 
   socket.on('newMessage', (data) => {
     console.log("data = ", data);
+    roomCollector.addNewMessage(data);
     io.to(data.room).emit('newMessage', data);
   });
 
