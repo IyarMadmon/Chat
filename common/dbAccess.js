@@ -8,28 +8,39 @@ const MAX_QUEUE_SIZE = 5;
 
 RoomCollector = function() {
   p_db = new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
-  p_db.open().then(() =>  {
+  p_db.open()
+  .then(() =>  {
     console.log("Connected to DB");
     init();
-  }).catch(err => {
+  })
+  .catch(err => {
     console.log("error connection to DB", "-----working offline");
   }) ;
 };
 
-const init = function() {
-  getCollection(function(err, room_collection) {
+const init = () => {
+  getCollection('rooms')
+  .then(room_collection => {
     room_collection.find({}, {_id:0}).toArray(function(error, results) {
       p_rooms = results;
-    })
-  });
+    });
+  })
+  .catch(err => {
+    console.log("error retrieving room collection");
+  })
 }
 
-const getCollection= function(callback) {
-  p_db.collection('rooms', function(error, room_collection) {
-    if( error ) callback(error);
-    else callback(null, room_collection);
-  });
-};
+const getCollection = (collectionName) => {
+  return new Promise((resolve,reject) =>  {
+    p_db.collection(collectionName, (error, collection) => {
+      if(!error) {
+        resolve(collection);
+      } else {
+        reject(error);
+      }
+    });
+  })
+}
 
 RoomCollector.prototype.getAllRooms = function() {
   return p_rooms.map(room => {
