@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 let p_db;
 let p_rooms;
-const MAX_QUEUE_SIZE = 5;
+const MAX_QUEUE_SIZE = 3;
 
 RoomCollector = function() {
   p_db = new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
@@ -52,8 +52,30 @@ RoomCollector.prototype.getRoomMessages = function(roomId) {
   return p_rooms.filter(room => room.id == roomId)[0];
 }
 
-RoomCollector.prototype.addNewMessage = function(message) {
-  p_rooms.filter(room => message.room == room.id)[0].messages.push(_.pick(message, ['sender', 'content', 'time']));
+RoomCollector.prototype.addNewMessage = function(messageInput) {
+  const message = _.pick(messageInput, ['sender', 'content', 'time']);
+  const messageRoomId = messageInput.room;
+  const roomMessages = p_rooms.filter(room => messageRoomId == room.id)[0].messages;
+
+  if(roomMessages.length >= MAX_QUEUE_SIZE) {
+    const messageToInsert = _.pick(roomMessages.shift(), ['sender', 'content', 'time']) ;
+
+    getCollection('rooms')
+    .then(room_collection => {
+      room_collection.updateOne(
+          {id:parseInt(messageRoomId)},
+          {
+            $push:{
+              messages: messageToInsert
+            }
+          });
+      console.log("row inserted successfully to DB");
+    })
+    .catch(err => {
+      console.log("erro insert message - ", messageInput, " - to DB");
+    });
+  }
+   roomMessages.push(message);
 }
 
 exports.RoomCollector = RoomCollector;
