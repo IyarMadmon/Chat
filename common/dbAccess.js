@@ -8,10 +8,12 @@ const MAX_QUEUE_SIZE = 5;
 
 RoomCollector = function() {
   p_db = new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
-  p_db.open(function(){
+  p_db.open().then(() =>  {
     console.log("Connected to DB");
     init();
-  });
+  }).catch(err => {
+    console.log("error connection to DB", "-----working offline");
+  }) ;
 };
 
 const init = function() {
@@ -20,11 +22,6 @@ const init = function() {
       p_rooms = results;
     })
   });
-}
-
-const updateRoomsObject = function(newObj) {
-  p_rooms = newObj;
-  console.log("this.rooms=", p_rooms);
 }
 
 const getCollection= function(callback) {
