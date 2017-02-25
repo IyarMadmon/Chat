@@ -28,7 +28,7 @@ export default class ChatBox extends React.Component {
     });
     socket.on('disconnect', () => {
       if(this.state.selectedRoom) {
-        socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
+        socket.emit("unSubscribeFromRoom", {roomId:this.state.selectedRoom, userName: this.state.userName} );
       }
       console.log('disconnect');
     });
@@ -71,11 +71,11 @@ export default class ChatBox extends React.Component {
 
   _selectRoom(roomVal) {
     if(this.state.selectedRoom) {
-      socket.emit("unSubscribeFromRoom", this.state.selectedRoom);
+      socket.emit("unSubscribeFromRoom", {roomId:this.state.selectedRoom, userName: this.state.userName} );
     }
 
     this.setState({selectedRoom:roomVal});
-    socket.emit("subscribeToRoom", roomVal);
+    socket.emit("subscribeToRoom", {roomId:roomVal, userName: this.state.userName});
 
     request.get(`/room/messages/${roomVal}`).end((err, res) => {
       const messages = res.body.messages;

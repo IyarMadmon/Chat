@@ -28,16 +28,14 @@ io.on('connection', function(socket) {
     io.to(data.room).emit('newMessage', data);
   });
 
-  socket.on("roomChange", (data) => {
-    socket.join(data);
-  });
-
   socket.on("subscribeToRoom", (data) => {
-    socket.join(data);
+    roomCollector.addParticipantToRoom(data);
+    socket.join(data.roomId);
   });
 
   socket.on("unSubscribeFromRoom", (data) => {
-    socket.leave(data);
+    roomCollector.removeParticipantFromRoom(data);
+    socket.leave(data.roomId);
   });
 
   socket.on('disconnect', () => {

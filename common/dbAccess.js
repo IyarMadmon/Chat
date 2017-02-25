@@ -1,10 +1,13 @@
 const Db = require('mongodb').Db;
 const Server = require('mongodb').Server;
 const _ = require('lodash');
+const consts = require("./consts");
 
 let p_db;
-let p_rooms;
-const MAX_QUEUE_SIZE = 3;
+let p_rooms = [];
+let online = true;
+const MAX_QUEUE_SIZE = 20;
+const DEFAULT_ROOMS = consts.DEFAULT_ROOMS;
 
 RoomCollector = function() {
   p_db = new Db('chat', new Server("localhost", 27017, {safe: false}, {auto_reconnect: true}, {}));
@@ -14,6 +17,8 @@ RoomCollector = function() {
     init();
   })
   .catch(err => {
+    online = false;
+    p_rooms = DEFAULT_ROOMS;
     console.log("error connection to DB", "-----working offline");
   }) ;
 };
@@ -21,8 +26,12 @@ RoomCollector = function() {
 const init = () => {
   getCollection('rooms')
   .then(room_collection => {
-    room_collection.find({}, {_id:0}).toArray(function(error, results) {
-      p_rooms = results;
+    room_collection.find({}, {_id:0, messages:0}).toArray(function(error, results) {
+      results.map(result => {
+        result.messages = [];
+        result.participants = [];
+        p_rooms.push(result);
+      });
     });
   })
   .catch(err => {
@@ -52,12 +61,25 @@ RoomCollector.prototype.getRoomMessages = function(roomId) {
   return p_rooms.filter(room => room.id == roomId)[0];
 }
 
+RoomCollector.prototype.removeParticipantFromRoom = function(data) {
+  try{
+    const participants = p_rooms.filter(room => room.id == data.roomId)[0].participants;
+    participants.splice(participants.indexOf(data.userName), 1);
+  } catch(error) {
+    console.log(`The user ${data.userName} failed to be removed from rooms ${data.roomId}. Error = `, error);
+  }
+}
+
+RoomCollector.prototype.addParticipantToRoom = function(data) {
+  p_rooms.filter(room => room.id == data.roomId)[0].participants.push(data.userName);
+}
+
 RoomCollector.prototype.addNewMessage = function(messageInput) {
   const message = _.pick(messageInput, ['sender', 'content', 'time']);
   const messageRoomId = messageInput.room;
   const roomMessages = p_rooms.filter(room => messageRoomId == room.id)[0].messages;
 
-  if(roomMessages.length >= MAX_QUEUE_SIZE) {
+  if(online && roomMessages.length >= MAX_QUEUE_SIZE) {
     const messageToInsert = _.pick(roomMessages.shift(), ['sender', 'content', 'time']) ;
 
     getCollection('rooms')
