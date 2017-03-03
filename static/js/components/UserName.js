@@ -37,7 +37,7 @@ export default class UserName extends React.Component {
       className="modal-content"
       overlayClassName="modal-overlay"
     >
-      <form onSubmit={this._onHandleSubmit}>
+      <form id="userNameForm" onSubmit={this._onHandleSubmit}>
         <input
             ref={(input) => { this.textInput = input; }}
             value={this.state.inputValue}
@@ -45,7 +45,7 @@ export default class UserName extends React.Component {
             type="text"
             id="username"
             placeholder="Enter nickname"></input>
-        <input type="submit" value="Begin Chatting"></input>
+        <input id="userNameSubmit" type="submit" value="Start Chatting"></input>
       </form>
     </Modal>
     )

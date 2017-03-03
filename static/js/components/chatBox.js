@@ -53,6 +53,7 @@ export default class ChatBox extends React.Component {
 
               <RoomSelector
                 rooms={this.state.rooms}
+                disabled={this.state.isLoginModalOpen}
                 onChange={this._selectRoom.bind(this)}/>
 
               <MessageInputAndButton

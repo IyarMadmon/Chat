@@ -3,12 +3,14 @@ import React from 'react';
 export default class RoomSelector extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {selectedRoom:""};
+    this.state = {
+      selectedRoom:""
+    };
   }
 
   _onChangeRoom(event) {
     const roomVal = event.target.id;
-    if(roomVal === this.state.selectedRoom) return;
+    if(roomVal === this.state.selectedRoom || this.props.disabled) return;
     this.setState({selectedRoom:roomVal});
     this.props.onChange(roomVal);
   }
