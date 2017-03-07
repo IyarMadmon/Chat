@@ -2,6 +2,7 @@ import io from 'socket.io-client';
 import React from 'react';
 import Chat from './chat';
 import UserName from './UserName';
+import Header from './Header';
 import MessageInputAndButton from './messageInputAndButton';
 import RoomSelector from './roomSelector';
 import request from 'superagent';
@@ -43,22 +44,25 @@ export default class ChatBox extends React.Component {
 
   render() {
     return (<div>
-              <UserName
-                onChange={this._onChangeUserName.bind(this)}
-                isModalOpen={this.state.isLoginModalOpen}/>
-
-              <Chat
-                chatContent={this.state.chatContent}
+              <Header
                 userName = {this.state.userName}/>
+              <main>
+                <UserName
+                  onChange={this._onChangeUserName.bind(this)}
+                  isModalOpen={this.state.isLoginModalOpen}/>
 
-              <RoomSelector
-                rooms={this.state.rooms}
-                disabled={this.state.isLoginModalOpen}
-                onChange={this._selectRoom.bind(this)}/>
+                <RoomSelector
+                  rooms={this.state.rooms}
+                  disabled={this.state.isLoginModalOpen}
+                  onChange={this._selectRoom.bind(this)}/>
 
-              <MessageInputAndButton
-                enabled={this.state.selectedRoom && this.state.userName !== ""}
-                onSubmit={this._onSendMessage.bind(this)}/>
+                <Chat
+                  chatContent={this.state.chatContent}/>
+
+                <MessageInputAndButton
+                  enabled={this.state.selectedRoom && this.state.userName !== ""}
+                  onSubmit={this._onSendMessage.bind(this)}/>
+              </main>
             </div>);
   }
 

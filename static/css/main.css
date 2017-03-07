@@ -3,6 +3,11 @@ header {
   background-color: #498699;
 }
 
+main {
+  width:960px;
+  margin: 25px auto 40px;
+}
+
 .ReactModal__Body--open {
     overflow: hidden;
     background-color: #cccccc;
@@ -44,6 +49,10 @@ header {
   width: 15%;
 }
 
+#name-display {
+  float:left;
+}
+
 .roomOption {
   width: 100%;
   display: block;
@@ -81,4 +90,8 @@ header {
 
 #message {
   width : 280px;
+}
+
+input:disabled {
+  background-color: #cccccc;
 }
