@@ -1,8 +1,16 @@
+body {
+  margin-top:0;
+}
 header {
-  text-align: center;
+  height:60px;
   background-color: #498699;
+  padding:0px 30px 8px 30px;
 }
 
+h1 {
+  float: left;
+  margin:14px 20px 20px 50px;;
+}
 main {
   width:960px;
   margin: 25px auto 40px;
@@ -50,7 +58,8 @@ main {
 }
 
 #name-display {
-  float:left;
+  float :right;
+  padding-left: 40px;
 }
 
 .roomOption {
