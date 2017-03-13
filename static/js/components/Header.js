@@ -11,8 +11,8 @@ export default class Header extends React.Component {
   }
   render() {
     return (<header >
+              <h1>Chat Shit</h1>
               <h4 id="name-display">{this.displayName()}</h4>
-              <h1> Chat Shit </h1>
             </header>);
   }
 }

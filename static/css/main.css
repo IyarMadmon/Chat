@@ -2,14 +2,16 @@ body {
   margin-top:0;
 }
 header {
+  display: flex;
+  align-items:center;
   height:60px;
   background-color: #498699;
-  padding:0px 30px 8px 30px;
+  margin:0px 100px 8px 100px;
 }
 
 h1 {
-  float: left;
-  margin:14px 20px 20px 50px;;
+  margin-right: auto;
+  margin-left:40px;
 }
 main {
   width:960px;
@@ -28,7 +30,6 @@ main {
   border-radius: 5px;
   font: normal 16px/normal "Comic Sans MS", cursive, sans-serif;
   color: rgba(0,0,0,0.9);
-  -o-text-overflow: clip;
   text-overflow: clip;
   display: block;
   width: 100%;
@@ -41,25 +42,30 @@ main {
   height:60%;
 }
 
-#chat {
+#main-flex-container {
+  display: flex;
+  width: 880px;
+  height:350px;
+  margin-bottom: 20px;
   text-align: left;
+}
+
+#chat {
   border:1px solid black;
-  height: 200px;
-  width: 50%;
-  display: inline-block;
+  width: 450px;
+  height:100%;
+  overflow:auto;
+  margin-left: 20px;
 }
 
 #roomSelector {
-  text-align: left;
   border:1px solid black;
-  display: inline-block;
-  height: 200px;
-  width: 15%;
+  width: 200px;
 }
 
 #name-display {
-  float :right;
-  padding-left: 40px;
+  margin-left: auto;
+  margin-right:100px;
 }
 
 .roomOption {

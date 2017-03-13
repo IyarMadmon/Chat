@@ -14,6 +14,7 @@ export default class ChatBox extends React.Component {
   constructor() {
     super();
     this.mesConut = 0;
+    this.chatElementId = "chat";
     this.state = {
       rooms:[],
       selectedRoom: null,
@@ -37,6 +38,7 @@ export default class ChatBox extends React.Component {
       console.log("newMessage = ", data);
       const chatContent =  this.state.chatContent.concat(data);
       this.setState({chatContent});
+      this._scrollDownChat();
     });
 
     this._getRooms();
@@ -50,15 +52,16 @@ export default class ChatBox extends React.Component {
                 <UserName
                   onChange={this._onChangeUserName.bind(this)}
                   isModalOpen={this.state.isLoginModalOpen}/>
+                <div id="main-flex-container">
+                  <RoomSelector
+                    rooms={this.state.rooms}
+                    disabled={this.state.isLoginModalOpen}
+                    onChange={this._selectRoom.bind(this)}/>
 
-                <RoomSelector
-                  rooms={this.state.rooms}
-                  disabled={this.state.isLoginModalOpen}
-                  onChange={this._selectRoom.bind(this)}/>
-
-                <Chat
-                  chatContent={this.state.chatContent}/>
-
+                  <Chat
+                    elementId={this.chatElementId}
+                    chatContent={this.state.chatContent}/>
+                </div>
                 <MessageInputAndButton
                   enabled={this.state.selectedRoom && this.state.userName !== ""}
                   onSubmit={this._onSendMessage.bind(this)}/>
@@ -85,12 +88,18 @@ export default class ChatBox extends React.Component {
     request.get(`/room/messages/${roomVal}`).end((err, res) => {
       const messages = res.body.messages;
       this.setState({chatContent: messages ? messages : []});
-    })
+      this._scrollDownChat();
+    });
   }
 
   _getRooms() {
     request.get('/rooms').end((err, res) => {
       this.setState({rooms:res.body});
     });
+  }
+
+  _scrollDownChat() {
+    const elem = document.getElementById(this.chatElementId);
+    elem.scrollTop = elem.scrollHeight;
   }
 }

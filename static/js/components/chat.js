@@ -3,7 +3,7 @@ import React from 'react';
 export default class Chat extends React.Component {
   render() {
     return (<div>
-              <div id="chat">
+              <div id={this.props.elementId}>
                 {this.props.chatContent.map(message => <MessageRow
                                                           sender={message.sender}
                                                           content={message.content}
