@@ -27,7 +27,6 @@ export default class MessageInputAndButton extends React.Component {
     return (<form onSubmit={this.handleSubmit}>
               <input
                 disabled={!this.props.enabled}
-                type="text"
                 id="message"
                 placeholder="Enter message"
                 value={this.state.inputValue}

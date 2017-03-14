@@ -61,10 +61,13 @@ export default class ChatBox extends React.Component {
                   <Chat
                     elementId={this.chatElementId}
                     chatContent={this.state.chatContent}/>
+                  <div className="first-flex-item"></div>
+                  <div className="second-flex-item">
+                    <MessageInputAndButton
+                      enabled={this.state.selectedRoom && this.state.userName !== ""}
+                      onSubmit={this._onSendMessage.bind(this)}/>
+                  </div>
                 </div>
-                <MessageInputAndButton
-                  enabled={this.state.selectedRoom && this.state.userName !== ""}
-                  onSubmit={this._onSendMessage.bind(this)}/>
               </main>
             </div>);
   }

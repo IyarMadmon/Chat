@@ -42,8 +42,22 @@ main {
   height:60%;
 }
 
+.first-flex-item {
+  width: 200px;
+}
+
+.second-flex-item {
+  width: 500px;
+  margin-left: 20px;
+}
+
+.first-flex-row {
+  margin-bottom: 20px;
+}
+
 #main-flex-container {
   display: flex;
+  flex-wrap: wrap;
   width: 880px;
   height:350px;
   margin-bottom: 20px;
@@ -52,15 +66,12 @@ main {
 
 #chat {
   border:1px solid black;
-  width: 450px;
   height:100%;
   overflow:auto;
-  margin-left: 20px;
 }
 
 #roomSelector {
   border:1px solid black;
-  width: 200px;
 }
 
 #name-display {
@@ -104,7 +115,10 @@ main {
 }
 
 #message {
-  width : 280px;
+  width : 93%;
+}
+#sendMessage {
+  width : 25px;
 }
 
 input:disabled {
