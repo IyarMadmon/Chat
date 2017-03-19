@@ -48,11 +48,17 @@ main {
 
 .second-flex-item {
   width: 500px;
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .first-flex-row {
   margin-bottom: 20px;
+}
+
+.main-boxes {
+  border-radius: 8px;
+  border: 4px solid black;
+  background-color: #c7d2e2;
 }
 
 #main-flex-container {
@@ -65,13 +71,12 @@ main {
 }
 
 #chat {
-  border:1px solid black;
   height:100%;
   overflow:auto;
 }
 
 #roomSelector {
-  border:1px solid black;
+
 }
 
 #name-display {
@@ -115,7 +120,13 @@ main {
 }
 
 #message {
-  width : 93%;
+  width : 91%;
+  margin-left: 8px;
+  border: 1px solid #b7b7b7;
+  border-radius: 5px;
+  font: normal 16px/normal "Comic Sans MS", cursive, sans-serif;
+  color: rgba(0,0,0,0.9);
+  text-overflow: clip;
 }
 #sendMessage {
   width : 25px;
