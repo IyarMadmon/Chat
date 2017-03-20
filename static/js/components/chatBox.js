@@ -19,6 +19,7 @@ export default class ChatBox extends React.Component {
       rooms:[],
       selectedRoom: null,
       chatContent: [],
+      participants:[],
       userName: "",
       isLoginModalOpen: true
     };
@@ -61,6 +62,7 @@ export default class ChatBox extends React.Component {
                   <Chat
                     elementId={this.chatElementId}
                     chatContent={this.state.chatContent}/>
+
                   <div className="first-flex-item"></div>
                   <div className="second-flex-item">
                     <MessageInputAndButton
@@ -90,7 +92,7 @@ export default class ChatBox extends React.Component {
 
     request.get(`/room/messages/${roomVal}`).end((err, res) => {
       const messages = res.body.messages;
-      this.setState({chatContent: messages ? messages : []});
+      this.setState({chatContent: messages });
       this._scrollDownChat();
     });
   }

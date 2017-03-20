@@ -26,11 +26,6 @@ main {
 #username {
   box-sizing: content-box;
   position: relative;
-  border: 1px solid #b7b7b7;
-  border-radius: 5px;
-  font: normal 16px/normal "Comic Sans MS", cursive, sans-serif;
-  color: rgba(0,0,0,0.9);
-  text-overflow: clip;
   display: block;
   width: 100%;
   margin-bottom: 10px;
@@ -48,7 +43,7 @@ main {
 
 .second-flex-item {
   width: 500px;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .first-flex-row {
@@ -87,7 +82,8 @@ main {
 .roomOption {
   width: 100%;
   display: block;
-  cursor:cell;
+  cursor:pointer;
+
 }
 
 .selectedRoom {
@@ -119,14 +115,18 @@ main {
   margin: 8px auto;
 }
 
-#message {
-  width : 91%;
-  margin-left: 8px;
+input[type=text] {
   border: 1px solid #b7b7b7;
   border-radius: 5px;
   font: normal 16px/normal "Comic Sans MS", cursive, sans-serif;
   color: rgba(0,0,0,0.9);
   text-overflow: clip;
+}
+
+#message {
+  width : 91%;
+  margin-left: 8px;
+
 }
 #sendMessage {
   width : 25px;
