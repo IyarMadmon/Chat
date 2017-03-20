@@ -5,9 +5,8 @@ export default class Participants extends React.Component {
     return (<div id="participants" className="third-flex-item first-flex-row">
               <span>-- Participants --</span>
               {this.props.participants.map(participant => <Participant
-                                              id={participant.name}
-                                              name={participant.name}
-                                              key={participant.name}>
+                                              name={participant}
+                                              key={participant}>
                                             </Participant>)}
             </div>
     );
@@ -15,5 +14,5 @@ export default class Participants extends React.Component {
 }
 
 function Participant(props) {
-  return return (<div className="" value={props.name} id={props.id}>{props.name}</div>);
+  return (<div className="" >{props.name}</div>);
 }

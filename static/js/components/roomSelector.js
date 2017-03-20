@@ -20,7 +20,7 @@ export default class RoomSelector extends React.Component {
   }
 
   render () {
-    return (<div id="roomSelector" className="first-flex-item first-flex-row main-boxes">
+    return (<div id="roomSelector" className="first-flex-item first-flex-row">
               <span>-- Select a Room --</span>
               {this.props.rooms.map(room => <RoomSelectOption
                                               onSelect={this._onChangeRoom.bind(this)}

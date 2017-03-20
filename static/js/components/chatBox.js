@@ -3,6 +3,7 @@ import React from 'react';
 import Chat from './chat';
 import UserName from './UserName';
 import Header from './Header';
+import Participants from './Participants';
 import MessageInputAndButton from './messageInputAndButton';
 import RoomSelector from './roomSelector';
 import request from 'superagent';
@@ -42,7 +43,22 @@ export default class ChatBox extends React.Component {
       this._scrollDownChat();
     });
 
+    socket.on('newParticipant', (name) => {
+      const participants =  this.state.participants.concat(name);
+      this.setState({participants});
+    });
+
+    socket.on('removeParticipant', (name) => {
+      const participants =  this.state.participants.filter(a => a != name);
+      this.setState({participants});
+    });
+
     this._getRooms();
+  }
+
+  componentWillUnmount() {
+    console.log("unmount");
+    socket.emit("unSubscribeFromRoom", {roomId:this.state.selectedRoom, userName: this.state.userName} );
   }
 
   render() {
@@ -62,6 +78,8 @@ export default class ChatBox extends React.Component {
                   <Chat
                     elementId={this.chatElementId}
                     chatContent={this.state.chatContent}/>
+                  <Participants
+                    participants={this.state.participants}/>
 
                   <div className="first-flex-item"></div>
                   <div className="second-flex-item">
@@ -92,7 +110,8 @@ export default class ChatBox extends React.Component {
 
     request.get(`/room/messages/${roomVal}`).end((err, res) => {
       const messages = res.body.messages;
-      this.setState({chatContent: messages });
+      const participants = res.body.participants;
+      this.setState({chatContent: messages , participants});
       this._scrollDownChat();
     });
   }

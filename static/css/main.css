@@ -46,11 +46,13 @@ main {
   margin-left: 5px;
 }
 
-.first-flex-row {
-  margin-bottom: 20px;
+.third-flex-item {
+  width: 140px;
+  margin-left: 5px;
 }
 
-.main-boxes {
+.first-flex-row {
+  margin-bottom: 20px;
   border-radius: 8px;
   border: 4px solid black;
   background-color: #c7d2e2;

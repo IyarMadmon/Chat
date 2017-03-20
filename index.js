@@ -31,11 +31,13 @@ io.on('connection', function(socket) {
   socket.on("subscribeToRoom", (data) => {
     roomCollector.addParticipantToRoom(data);
     socket.join(data.roomId);
+    io.to(data.roomId).emit('newParticipant', data.userName);
   });
 
   socket.on("unSubscribeFromRoom", (data) => {
     roomCollector.removeParticipantFromRoom(data);
     socket.leave(data.roomId);
+    io.to(data.roomId).emit('removeParticipant', data.userName);
   });
 
   socket.on('disconnect', () => {
